@@ -60,7 +60,7 @@ class MovieUpdate(MovieBase):
 
 class MovieRead(MovieBase):
     id: int
-    poster_url: Optional[HttpUrl]
+    poster_url: Optional[str]
     date_added: datetime
     genres: List[GenreRead] = []
 
