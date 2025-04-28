@@ -1,33 +1,35 @@
-from sqlalchemy.orm import Session
-from models import Base, engine, Genre, Movie
+from database import SessionLocal, engine
+import models
+
+models.Base.metadata.create_all(bind=engine)
 
 def seed():
-    db = Session(bind=engine)
+    db = SessionLocal()
 
-
-    genre1 = Genre(name='Драма', description='Драматические фильмы')
-    genre2 = Genre(name='Комедия', description='Веселые фильмы')
+    genre1 = models.Genre(name="Драма", description="Драматические фильмы")
+    genre2 = models.Genre(name="Комедия", description="Комедийные фильмы")
     db.add_all([genre1, genre2])
     db.commit()
 
 
-    movie1 = Movie(
-        title='Интерстеллар',
+    from datetime import datetime
+    movie1 = models.Movie(
+        title="Интерстеллар",
         year=2014,
         duration=169,
         rating=8.6,
-        description='Научно-фантастический фильм о путешествии во времени и пространстве.',
-        poster_url='http://example.com/posters/interstellar.jpg',
+        description="Фантастический фильм о космосе",
+        date_added=datetime.utcnow(),
         genres=[genre1]
     )
 
-    movie2 = Movie(
-        title='Маска',
+    movie2 = models.Movie(
+        title="Маска",
         year=1994,
-        duration=104,
+        duration=101,
         rating=7.3,
-        description='Комедийный фильм с Джимом Керри.',
-        poster_url='http://example.com/posters/mask.jpg',
+        description="Комедия с Джимом Керри",
+        date_added=datetime.utcnow(),
         genres=[genre2]
     )
 

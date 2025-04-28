@@ -1,8 +1,7 @@
 from sqlalchemy import Column, Integer, String, Float, Text, DateTime, Table, ForeignKey
-from sqlalchemy.orm import relationship, declarative_base
+from sqlalchemy.orm import relationship
 from datetime import datetime
-
-Base = declarative_base()
+from database import Base
 
 movie_genre_association = Table(
     'movie_genre',
@@ -14,20 +13,18 @@ movie_genre_association = Table(
 class Genre(Base):
     __tablename__ = 'genres'
     id = Column(Integer, primary_key=True, index=True)
-    name = Column(String(100), unique=True, nullable=False)
-    description = Column(Text)
-
+    name = Column(String(50), unique=True, nullable=False)
+    description = Column(Text, nullable=True)
     movies = relationship('Movie', secondary=movie_genre_association, back_populates='genres')
 
 class Movie(Base):
     __tablename__ = 'movies'
     id = Column(Integer, primary_key=True, index=True)
-    title = Column(String(200), nullable=False)
-    year = Column(Integer)
-    duration = Column(Integer)
-    rating = Column(Float)
-    description = Column(Text)
-    poster_url = Column(String)
-    created_at = Column(DateTime, default=datetime.utcnow)
-
+    title = Column(String(100), nullable=False)
+    year = Column(Integer, nullable=True)
+    duration = Column(Integer, nullable=True)  # минут
+    rating = Column(Float, nullable=True)  # 0-10
+    description = Column(Text, nullable=True)
+    poster_url = Column(String(255), nullable=True)
+    date_added = Column(DateTime, default=datetime.utcnow)
     genres = relationship('Genre', secondary=movie_genre_association, back_populates='movies')
